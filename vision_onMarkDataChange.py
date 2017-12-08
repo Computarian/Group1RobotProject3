@@ -26,8 +26,10 @@ testName = "python: vision_onMarkDataChange: "
 import sys
 import time
 
+import Robot_IP_Address
+
 # IP and PORT default values.
-LOCAL_IP = "127.0.0.1" # Replace here with your computer IP address.
+LOCAL_IP = Robot_IP_Address.IP # Replace here with your computer IP address.
 LOCAL_PORT = 9999
 IP = "nao.local"  # Replace here with your NaoQi's IP address.
 PORT = 9559

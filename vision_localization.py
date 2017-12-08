@@ -3,9 +3,10 @@ from naoqi import ALProxy
 
 import math
 import almath
+import Robot_IP_Address
 
 # Set here your robto's ip.
-ip = "127.0.0.1"
+ip = Robot_IP_Address.IP
 # Set here the size of the landmark in meters.
 landmarkTheoreticalSize = 0.06 #in meters
 # Set here the current camera ("CameraTop" or "CameraBottom").

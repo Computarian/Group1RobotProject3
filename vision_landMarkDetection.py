@@ -12,11 +12,15 @@
 # - We then read this ALMemory value and check whether we get
 #   interesting things.
 
+import sys
+sys.path.insert(0, '/path/to/application/app/folder')
+
+import Robot_IP_Address
 import time
-
 from naoqi import ALProxy
+import Robot_IP_Address
 
-IP = "nao.local"  # Replace here with your NaoQi's IP address.
+IP = Robot_IP_Address.IP  # Replace here with your NaoQi's IP address.
 PORT = 9559
 
 # Create a proxy to ALLandMarkDetection
