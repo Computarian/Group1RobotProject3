@@ -12,10 +12,6 @@
 # - We then read this ALMemory value and check whether we get
 #   interesting things.
 
-import sys
-sys.path.insert(0, '/path/to/application/app/folder')
-
-import Robot_IP_Address
 import time
 from naoqi import ALProxy
 import Robot_IP_Address
