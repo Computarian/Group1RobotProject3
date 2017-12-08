@@ -28,11 +28,9 @@ def main(robotIP):
     fractionMaxSpeed = 0.1
     motionProxy.setAngles(names,angles,fractionMaxSpeed)
 
-    
-    
-
-    time.sleep(3.0)
-    motionProxy.setStiffnesses("RArm", 0.0)
+    #commented this out so the robot doesn't drop arm in this function
+    #time.sleep(3)
+    #motionProxy.setStiffnesses("RArm", 0.0)
 
 if __name__ == "__main__":
     robotIp = Robot_IP_Address.IP
