@@ -2,32 +2,33 @@ from naoqi import ALProxy
 import Robot_IP_Address
 import time
 import almath
+import script_findLandMark
 
 #rotating joints to better hold can code
 def pos_arms(motion):
     #wrist yaw is rotating wrist
     #shoulder roll is angle of shoulder away from robot body
     r_wrist = "RWristYaw"
-    #l_wrist = "LWristYaw"
+    l_wrist = "LWristYaw"
     r_shoulderRoll = "RShoulderRoll"
-    #l_shoulderRoll = "LShoulderRoll"
+    l_shoulderRoll = "LShoulderRoll"
     r_shoulderPitch = "RShoulderPitch"
-    #l_shoulderPitch = "LShoulderPitch"
+    l_shoulderPitch = "LShoulderPitch"
     headPitch = "HeadPitch"
 
     #editing these values will adjust angles
     angleLists_r_wrist = 100.0 * almath.TO_RAD
-    #angleLists_l_wrist = -100.0 * almath.TO_RAD
+    angleLists_l_wrist = -100.0 * almath.TO_RAD
     angleLists_r_shoulderRoll = 10 * almath.TO_RAD
-    #angleLists_l_shoulderRoll = -10* almath.TO_RAD
-    angleLists_r_shoulderPitch = -45 * almath.TO_RAD
-    #angleLists_l_shoulderPitch = 5 * almath.TO_RAD
-    angleLists_headPitch = 25 * almath.TO_RAD
+    angleLists_l_shoulderRoll = -10* almath.TO_RAD
+    angleLists_r_shoulderPitch = 45 * almath.TO_RAD
+    angleLists_l_shoulderPitch = -45 * almath.TO_RAD
+    #angleLists_headPitch = 25 * almath.TO_RAD
     timeLists = 1.0
     isAbsolute = True
 
     #moves head up
-    id = motion.post.angleInterpolation(headPitch, angleLists_headPitch, timeLists, isAbsolute)
+    #id = motion.post.angleInterpolation(headPitch, angleLists_headPitch, timeLists, isAbsolute)
 
     #moves shoulders up
     id = motion.post.angleInterpolation(r_shoulderPitch, angleLists_r_shoulderPitch, timeLists, isAbsolute)
@@ -47,12 +48,13 @@ def pos_arms(motion):
     #id = motion.post.angleInterpolation(l_shoulderRoll, angleLists_l_shoulderRoll, timeLists, isAbsolute)
     #motion.wait(id, 0)
 
+    #disables right arm motor so robot can walk without lowering arm
     id = motion.post.setWalkArmsEnabled(True, False)
     motion.wait(id, 0)
 
 def main():
     motion = ALProxy("ALMotion", Robot_IP_Address.IP, 9559)
-    #tts = ALProxy("ALTextToSpeech", Robot_IP_Address.IP, 9559)
+    tts = ALProxy("ALTextToSpeech", Robot_IP_Address.IP, 9559)
     motion.setStiffnesses("Body", 1.0)
     id = motion.post.moveInit()
     motion.wait(id, 0)
@@ -68,15 +70,42 @@ def main():
     #id = motion.post.closeHand('LHand')
     #motion.wait(id, 0)
 
+    """"
+    i = 0
+    while(i < 4):
+        id = motion.post.moveTo(0.25, 0, 0)
+        motion.wait(id, 0)
+        time.sleep(1)
+        i=i+1
+    """
+
+
     id = motion.post.moveTo(0.25, 0, 0)
     motion.wait(id, 0)
-
-    #motion.post.moveTo(0.5, 0, 0)
+    time.sleep(2)
+    if (script_findLandMark.detect_landmark(motion)):
+        tts.say("I found the landmark!")
+    id = motion.post.moveTo(0.25, 0, 0)
+    motion.wait(id, 0)
+    time.sleep(2)
+    if (script_findLandMark.detect_landmark(motion)):
+        tts.say("I found the landmark!")
+    id = motion.post.moveTo(0.25, 0, 0)
+    motion.wait(id, 0)
+    time.sleep(2)
+    if (script_findLandMark.detect_landmark(motion)):
+        tts.say("I found the landmark!")
+    id = motion.post.moveTo(0.25, 0, 0)
+    motion.wait(id, 0)
+    time.sleep(2)
+    if (script_findLandMark.detect_landmark(motion)):
+        tts.say("I found the landmark!")
     #time.sleep(5)
     #motion.post.moveTo(0, 0, 3.1415)
     #time.sleep(10)
     #motion.post.moveTo(0, 0, 6.28318531 )
     #time.sleep(3)
+
     id = motion.post.setWalkArmsEnabled(True, True)
     motion.wait(id, 0)
     motion.rest()
