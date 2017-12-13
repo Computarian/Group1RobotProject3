@@ -1,7 +1,9 @@
 from naoqi import ALProxy
 import Robot_IP_Address
 import time
+import almath
 import script_findLandMark
+import script_holdCan
 
 def landmark_localization():
     # -*- encoding: UTF-8 -*-
@@ -80,10 +82,21 @@ def move_to_landmark(motion):
 
 def main():
     motion = ALProxy("ALMotion", Robot_IP_Address.IP, 9559)
+    tts = ALProxy("ALTextToSpeech", Robot_IP_Address.IP, 9559)
     motion.setStiffnesses("Body", 1.0)
     id = motion.post.moveInit()
     motion.wait(id, 0)
+    script_holdCan.pos_arms(motion)
 
+    #rotates "in place" until it sees the landmark
+    while(script_findLandMark.detect_landmark(motion) is False):
+        id = motion.post.moveTo(0,0, 10 * almath.TO_RAD)
+        motion.wait(id,0)
+    tts.say("I found the landmark")
+    motion.rest()
     #while not at destination
         #script_findLandMark.detect_landmark(motion)
         #move_to_landmark(motion)
+
+if __name__ == "__main__":
+    main()

@@ -52,6 +52,12 @@ def pos_arms(motion):
     id = motion.post.setWalkArmsEnabled(True, False)
     motion.wait(id, 0)
 
+    id = motion.post.openHand('RHand')
+    motion.wait(id, 0)
+
+    id = motion.post.closeHand('RHand')
+    motion.wait(id, 0)
+
 def main():
     motion = ALProxy("ALMotion", Robot_IP_Address.IP, 9559)
     tts = ALProxy("ALTextToSpeech", Robot_IP_Address.IP, 9559)
@@ -79,27 +85,6 @@ def main():
         i=i+1
     """
 
-
-    id = motion.post.moveTo(0.25, 0, 0)
-    motion.wait(id, 0)
-    time.sleep(2)
-    if (script_findLandMark.detect_landmark(motion)):
-        tts.say("I found the landmark!")
-    id = motion.post.moveTo(0.25, 0, 0)
-    motion.wait(id, 0)
-    time.sleep(2)
-    if (script_findLandMark.detect_landmark(motion)):
-        tts.say("I found the landmark!")
-    id = motion.post.moveTo(0.25, 0, 0)
-    motion.wait(id, 0)
-    time.sleep(2)
-    if (script_findLandMark.detect_landmark(motion)):
-        tts.say("I found the landmark!")
-    id = motion.post.moveTo(0.25, 0, 0)
-    motion.wait(id, 0)
-    time.sleep(2)
-    if (script_findLandMark.detect_landmark(motion)):
-        tts.say("I found the landmark!")
     #time.sleep(5)
     #motion.post.moveTo(0, 0, 3.1415)
     #time.sleep(10)
