@@ -8,7 +8,7 @@ import Robot_IP_Address
 # Set here your robto's ip.
 ip = Robot_IP_Address.IP
 # Set here the size of the landmark in meters.
-landmarkTheoreticalSize = 0.06 #in meters
+landmarkTheoreticalSize = 0.17 #in meters
 # Set here the current camera ("CameraTop" or "CameraBottom").
 currentCamera = "CameraTop"
 
