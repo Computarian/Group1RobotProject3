@@ -21,7 +21,7 @@ def pos_arms(motion):
     angleLists_l_wrist = -100.0 * almath.TO_RAD
     angleLists_r_shoulderRoll = 10 * almath.TO_RAD
     angleLists_l_shoulderRoll = -10* almath.TO_RAD
-    angleLists_r_shoulderPitch = 45 * almath.TO_RAD
+    angleLists_r_shoulderPitch = 90 * almath.TO_RAD
     angleLists_l_shoulderPitch = -45 * almath.TO_RAD
     #angleLists_headPitch = 25 * almath.TO_RAD
     timeLists = 1.0
@@ -31,8 +31,8 @@ def pos_arms(motion):
     #id = motion.post.angleInterpolation(headPitch, angleLists_headPitch, timeLists, isAbsolute)
 
     #moves shoulders up
-    id = motion.post.angleInterpolation(r_shoulderPitch, angleLists_r_shoulderPitch, timeLists, isAbsolute)
-    motion.wait(id, 0)
+    #id = motion.post.angleInterpolation(r_shoulderPitch, angleLists_r_shoulderPitch, timeLists, isAbsolute)
+    #motion.wait(id, 0)
     #id = motion.post.angleInterpolation(l_shoulderPitch, angleLists_l_shoulderPitch, timeLists, isAbsolute)
     #motion.wait(id, 0)
 
@@ -43,8 +43,8 @@ def pos_arms(motion):
     #motion.wait(id, 0)
 
     #moves arms towards each other
-    id = motion.post.angleInterpolation(r_shoulderRoll, angleLists_r_shoulderRoll, timeLists, isAbsolute)
-    motion.wait(id, 0)
+    #id = motion.post.angleInterpolation(r_shoulderRoll, angleLists_r_shoulderRoll, timeLists, isAbsolute)
+    #motion.wait(id, 0)
     #id = motion.post.angleInterpolation(l_shoulderRoll, angleLists_l_shoulderRoll, timeLists, isAbsolute)
     #motion.wait(id, 0)
 
@@ -57,6 +57,10 @@ def pos_arms(motion):
 
     id = motion.post.closeHand('RHand')
     motion.wait(id, 0)
+    time.sleep(3)
+    #id = motion.post.moveTo(1.0, 0, 0)
+    #motion.wait(id, 0)
+    #time.sleep(2)
 
 def main():
     motion = ALProxy("ALMotion", Robot_IP_Address.IP, 9559)
@@ -66,6 +70,8 @@ def main():
     motion.wait(id, 0)
 
     pos_arms(motion)
+
+    """"
     id = motion.post.openHand('RHand')
     motion.wait(id, 0)
     #id = motion.post.openHand('LHand')
@@ -75,8 +81,9 @@ def main():
     motion.wait(id, 0)
     #id = motion.post.closeHand('LHand')
     #motion.wait(id, 0)
+    """
 
-    """"
+    """
     i = 0
     while(i < 4):
         id = motion.post.moveTo(0.25, 0, 0)

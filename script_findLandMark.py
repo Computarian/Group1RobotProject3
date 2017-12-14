@@ -29,7 +29,8 @@ def detect_landmark(motion):
         exit(1)
 
     # A simple loop that reads the memValue and checks whether landmarks are detected.
-    for i in range(0, 20):
+    #edited this value from 20 to something lower so it doesn't take as long to see if there's a landmark
+    for i in range(0, 5):
         time.sleep(0.5)
         val = memoryProxy.getData(memValue)
 
@@ -39,9 +40,8 @@ def detect_landmark(motion):
 
         # Check whether we got a valid output.
         if (val and isinstance(val, list) and len(val) >= 2):
-            #added Bool return value
+            #returns bool value True if it sees a landmark
             return True
-
             # We detected naomarks !
             # For each mark, we can read its shape info and ID.
 
@@ -68,9 +68,9 @@ def detect_landmark(motion):
                 print val
                 print "Error msg %s" % (str(e))
         else:
-            #bool returns false if no landmark
-            return False
             print "No landmark detected"
+    # bool returns false if no landmark
+    return False
 
     # Unsubscribe the module.
     landMarkProxy.unsubscribe("Test_LandMark")

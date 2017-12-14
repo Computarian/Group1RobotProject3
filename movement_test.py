@@ -71,6 +71,7 @@ def head_test(motion):
     angleLists_headPitch = 28.5 * almath.TO_RAD
     id = motion.post.angleInterpolation(headPitch, angleLists_headPitch, timeLists, isAbsolute)
     motion.wait(id, 0)
+
     time.sleep(3)
     motion.rest()
 

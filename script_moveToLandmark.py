@@ -4,6 +4,7 @@ import time
 import almath
 import script_findLandMark
 import script_holdCan
+minDist = 0.6
 
 def landmark_localization():
     # -*- encoding: UTF-8 -*-
@@ -63,10 +64,24 @@ def landmark_localization():
 
     landmarkProxy.unsubscribe("landmarkTest")
 
+    #returns x, y, and z coords from landmark localization
+    return (robotToLandmark.r1_c4, robotToLandmark.r2_c4, robotToLandmark.r1_c4)
 
 def move_to_landmark(motion):
     #x,y,z = landmark_localization()
+    x, y, z = landmark_localization()
+    print x, y, z
 
+    print "Hello I run"
+    #if landmark is more than 10cm away
+    if (x > minDist):
+        id = motion.post.moveTo(x/4,y/4, 0)
+        motion.wait(id, 0)
+        print "I also run"
+        return x, y
+    else:
+        print "Do I run"
+        return x, y
     #hypotenuse from x and y get theta for move
     #robot doesn't like to go straight so cutting length down when far will keep it more on track
     #if dist > something big
@@ -88,12 +103,37 @@ def main():
     motion.wait(id, 0)
     script_holdCan.pos_arms(motion)
 
-    #rotates "in place" until it sees the landmark
-    while(script_findLandMark.detect_landmark(motion) is False):
-        id = motion.post.moveTo(0,0, 10 * almath.TO_RAD)
-        motion.wait(id,0)
-    tts.say("I found the landmark")
+    #variable to hold y coordinate from localization data to determine which direction
+    #robot rotates in
+    doIneedThisVariable = 1.0
+
+    #detect landmark loop and move to landmark will be in one big while loop that
+    #stops when robot is at "destination" ie close to landmark where it will begin to think about throwing can away
+    #while (destination is false):
+    while (True):
+        #rotates "in place" until it sees the landmark
+        while(script_findLandMark.detect_landmark(motion) is False):
+            #robot moves something degrees times almath's conversion to rads
+            if (doIneedThisVariable >= 0):
+                id = motion.post.moveTo(0,0, -15 * almath.TO_RAD)
+                motion.wait(id,0)
+            else:
+                id = motion.post.moveTo(0,0, 15 * almath.TO_RAD)
+                motion.wait(id,0)
+        #tts.say("I found the landmark")
+
+        #calls move to landmark function after detecting landmark
+        move_to_landmark(motion)
+        print move_to_landmark(motion)
+        #returns x and y values form move to landmark
+        xDist, doIneedThisVariable = move_to_landmark(motion)
+        print xDist
+        if (xDist <= minDist):
+            break
+
+    tts.say("Chappie did it!")
     motion.rest()
+
     #while not at destination
         #script_findLandMark.detect_landmark(motion)
         #move_to_landmark(motion)
