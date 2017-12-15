@@ -3,16 +3,15 @@ import Robot_IP_Address
 import time
 import almath
 import script_findLandMark
-import script_holdCan
+import script_actionCan
+#minimum distance for when robot is close enough to box
 minDist = 0.6
 
+#vision_localization.py from nao website put into function
+#robot should be localizing landmark since this only runs after findLandMark which detects if landmark
+#is in front of robot or not
 def landmark_localization():
     # -*- encoding: UTF-8 -*-
-    from naoqi import ALProxy
-
-    import math
-    import almath
-    import Robot_IP_Address
 
     # Set here your robto's ip.
     ip = Robot_IP_Address.IP
@@ -65,6 +64,7 @@ def landmark_localization():
     landmarkProxy.unsubscribe("landmarkTest")
 
     #returns x, y, and z coords from landmark localization
+    #x: forward(+) and back(-), y: left(+) and right(-)
     return (robotToLandmark.r1_c4, robotToLandmark.r2_c4, robotToLandmark.r1_c4)
 
 def move_to_landmark(motion):
@@ -73,14 +73,14 @@ def move_to_landmark(motion):
     print x, y, z
 
     print "Hello I run"
-    #if landmark is more than 10cm away
+    #if landmark is more than minDist away
     if (x > minDist):
         id = motion.post.moveTo(x/4,y/4, 0)
         motion.wait(id, 0)
-        print "I also run"
+        print ("Robot is ", x, " m away from the landmark")
         return x, y
     else:
-        print "Do I run"
+        print ("Robot has reached it's destination, x:", x, " y:", y, " z: ", z," coords")
         return x, y
     #hypotenuse from x and y get theta for move
     #robot doesn't like to go straight so cutting length down when far will keep it more on track
@@ -93,19 +93,21 @@ def move_to_landmark(motion):
         #motion.post.moveTo(x,y,0)
     #else robot at destination
         #return
-    print "Hi"
 
 def main():
+    #initializing the robot
     motion = ALProxy("ALMotion", Robot_IP_Address.IP, 9559)
     tts = ALProxy("ALTextToSpeech", Robot_IP_Address.IP, 9559)
     motion.setStiffnesses("Body", 1.0)
     id = motion.post.moveInit()
     motion.wait(id, 0)
-    script_holdCan.pos_arms(motion)
+
+    #calls script for robot to hold can
+    script_actionCan.lift_can(motion)
 
     #variable to hold y coordinate from localization data to determine which direction
     #robot rotates in
-    doIneedThisVariable = 1.0
+    yDist = 1.0
 
     #detect landmark loop and move to landmark will be in one big while loop that
     #stops when robot is at "destination" ie close to landmark where it will begin to think about throwing can away
@@ -114,11 +116,13 @@ def main():
         #rotates "in place" until it sees the landmark
         while(script_findLandMark.detect_landmark(motion) is False):
             #robot moves something degrees times almath's conversion to rads
-            if (doIneedThisVariable >= 0):
-                id = motion.post.moveTo(0,0, -15 * almath.TO_RAD)
-                motion.wait(id,0)
-            else:
+            #robot rotates left if it loses landmark location and it was to it's left
+            if (yDist >= 0.0):
                 id = motion.post.moveTo(0,0, 15 * almath.TO_RAD)
+                motion.wait(id,0)
+            #robot rotates right  if it loses landmark location and it was to it's right
+            else:
+                id = motion.post.moveTo(0,0, -15 * almath.TO_RAD)
                 motion.wait(id,0)
         #tts.say("I found the landmark")
 
@@ -126,17 +130,18 @@ def main():
         move_to_landmark(motion)
         print move_to_landmark(motion)
         #returns x and y values form move to landmark
-        xDist, doIneedThisVariable = move_to_landmark(motion)
+        xDist, yDist = move_to_landmark(motion)
         print xDist
+        #if robot is close enough to it's location, break out of this loop
         if (xDist <= minDist):
             break
 
+    #code for getting closer to bin  based off desired method can go here
+    #probably going to have a scripts for raising and then throwing can in there
+
+    #Chappie did it! Replace with better quote if desired
     tts.say("Chappie did it!")
     motion.rest()
-
-    #while not at destination
-        #script_findLandMark.detect_landmark(motion)
-        #move_to_landmark(motion)
 
 if __name__ == "__main__":
     main()
