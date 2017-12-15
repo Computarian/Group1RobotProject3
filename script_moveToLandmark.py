@@ -4,6 +4,9 @@ import time
 import almath
 import script_findLandMark
 import script_actionCan
+import joint_holdCan
+import motion_moveTo
+import math
 #minimum distance for when robot is close enough to box
 minDist = 0.6
 
@@ -75,7 +78,7 @@ def move_to_landmark(motion):
     print "Hello I run"
     #if landmark is more than minDist away
     if (x > minDist):
-        id = motion.post.moveTo(x/4,y/4, 0)
+        id = motion.post.moveTo(x/4.0,y/4.0, 0)
         motion.wait(id, 0)
         print ("Robot is ", x, " m away from the landmark")
         return x, y
@@ -140,7 +143,13 @@ def main():
     #probably going to have a scripts for raising and then throwing can in there
 
     #Chappie did it! Replace with better quote if desired
+    
     tts.say("Chappie did it!")
+    joint_holdCan.joint_raise_arm(motion)
+    
+    time.sleep(2)
+    motion_moveTo.move_forward(motion)
+    time.sleep(3)
     motion.rest()
 
 if __name__ == "__main__":

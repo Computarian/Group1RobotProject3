@@ -10,5 +10,5 @@ IP_6 = "10.16.96.29"
 
 tts = ALProxy("ALTextToSpeech", Robot_IP_Address.IP, 9559)
 #tts.setLanguage("Brazilian")
-tts.say("Hello!")
+tts.say("I have water damage")
 

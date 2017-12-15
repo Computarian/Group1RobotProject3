@@ -53,7 +53,7 @@ def head_test(motion):
     angleLists_headYaw = 115 * almath.TO_RAD
 
     headPitch = "HeadPitch"
-    angleLists_headPitch = -38.5 * almath.TO_RAD
+    angleLists_headPitch = -38 * almath.TO_RAD
     timeLists = 1.0
     isAbsolute = True
 
@@ -71,14 +71,25 @@ def head_test(motion):
     angleLists_headPitch = 28.5 * almath.TO_RAD
     id = motion.post.angleInterpolation(headPitch, angleLists_headPitch, timeLists, isAbsolute)
     motion.wait(id, 0)
-
+    
     time.sleep(3)
     motion.rest()
 
+def head_test2(motion):
+    headPitch = "HeadPitch"
+    fractionMaxSpeed = 0.1
+    motion.setStiffnesses(headPitch, 1.0)
+    angles  = (-10)*almath.TO_RAD
+  
+    
+    motion.setAngles(headPitch,angles,fractionMaxSpeed)
+    time.sleep(2)
+    motion.rest()
+    
 def main():
     motion = ALProxy("ALMotion", Robot_IP_Address.IP, 9559)
     #walk_with_raised_fist(motion)
-    head_test(motion)
+    head_test2(motion)
 
 if __name__ == "__main__":
     main()
