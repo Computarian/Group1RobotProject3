@@ -116,7 +116,7 @@ def main():
     #calls script for robot to hold can
     script_actionCan.lift_can(motion)
 
-    #variable to hold y coordinate from localization data to determine which direction
+    #variable to hold x, y coordinates from localization data to determine which direction
     #robot rotates in
     xDist = 0.0
     yDist = 0.0
@@ -155,23 +155,25 @@ def main():
     motion.wait(id, 0)
 
     #drops can into bin
-    id - motion.post.moveTo(0, 0, 45 * almath.TO_RAD)
+    id = motion.post.moveTo(0, 0, 45 * almath.TO_RAD)
+    motion.wait(id, 0)
     script_actionCan.drop_can(motion)
 
     #Chappie did it! Replace with better quote if desired
     tts.say("Chappie if you want to be in the gang you have to be cool, like daddy!")
-    tts.say("Look how daddy walks! Look how cool it's! Need to keep it gangsta' Chappie!")
 
     #backs away from bin
     id = motion.post.moveTo(-0.30, 0, 0)
+    tts.say("Look how daddy walks! Look how cool it's! Need to keep it gangsta' Chappie!")
     motion.wait(id, 0)
 
-    tts.say("Don't laugh, I'm being cool!")
-    # insert victory dance/pose here
-
-    #Chappie rests
+    #insert victory dance/pose here
     id = motion.post.setWalkArmsEnabled(True, True)
     motion.wait(id, 0)
+    script_actionCan.victory_dance(motion)
+    tts.say("Don't laugh, I'm being cool!")
+
+    #Chappie rests
     motion.rest()
 
 if __name__ == "__main__":

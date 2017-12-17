@@ -130,22 +130,40 @@ def victory_dance(motion):
     r_wrist = "RWristYaw"
     l_wrist = "LWristYaw"
     r_elbow = "RElbowRoll"
+    l_elboow = "LElbowRoll"
     r_shoulderRoll = "RShoulderRoll"
     l_shoulderRoll = "LShoulderRoll"
     r_shoulderPitch = "RShoulderPitch"
     l_shoulderPitch = "LShoulderPitch"
+    headPitch = "HeadPitch"
 
     # editing these values will adjust angles
-    angleLists_r_wrist = 0 * almath.TO_RAD
-    angleLists_l_wrist = -100 * almath.TO_RAD
-    angleLists_r_elbowRoll = 45 * almath.TO_RAD
+    angleLists_r_wrist = 90 * almath.TO_RAD
+    angleLists_l_wrist = -90 * almath.TO_RAD
+    angleLists_r_elbowRoll = -88.5 * almath.TO_RAD
+    angleLists_l_elbowRoll = 88.5 * almath.TO_RAD
     angleLists_r_shoulderRoll = -18 * almath.TO_RAD
-    angleLists_l_shoulderRoll = -10 * almath.TO_RAD
-    angleLists_r_shoulderPitch = 90 * almath.TO_RAD
-    angleLists_l_shoulderPitch = -45 * almath.TO_RAD
+    angleLists_l_shoulderRoll = 76 * almath.TO_RAD
+    angleLists_r_shoulderPitch = -90 * almath.TO_RAD
+    angleLists_l_shoulderPitch = -90 * almath.TO_RAD
+    angleLists_headPitch = 29.5 * almath.TO_RAD
     timeLists = 1.0
     isAbsolute = True
 
+    #attempt to make Chappie dab
+    #left arm movement
+    motion.post.angleInterpolation(l_shoulderPitch, angleLists_l_shoulderPitch, timeLists, isAbsolute)
+    id = motion.post.angleInterpolation(l_shoulderRoll, angleLists_l_shoulderRoll, timeLists, isAbsolute)
+    motion.wait(id, 0)
+
+    #right arm movement
+    motion.post.angleInterpolation(r_shoulderPitch, angleLists_r_shoulderPitch, timeLists, isAbsolute)
+    id = motion.post.angleInterpolation(r_elbow, angleLists_r_elbowRoll, timeLists, isAbsolute)
+    motion.wait(id, 0)
+
+    #head movement
+    id = motion.post.angleInterpolation(headPitch,angleLists_headPitch, timeLists, isAbsolute)
+    motion.wait(id, 0)
 
 def main():
     motion = ALProxy("ALMotion", Robot_IP_Address.IP, 9559)
