@@ -5,7 +5,7 @@ Chappie!
 
 Group 1: Tim Joyce, Max Medina, Lara Nunes, Michael Sousa
 
-TODO: Edge cases: Robot is close to landmark but is at an angle and landmark looks different. Robot doesn't have way to deal with landmark bin if it's not in it's line of sight at start after rorating 360 degrees.
+TODO: Edge cases: Robot is close to landmark but is at an angle and landmark looks different. Robot doesn't have way to deal with landmark bin if it's not in it's line of sight at start after rotating 360 degrees.
 
 -Robot's neck motor for head pitching causes head to fall down or backward, which is bad for stability
 
