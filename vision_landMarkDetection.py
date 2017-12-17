@@ -76,7 +76,7 @@ for i in range(0, 20):
 
         # Second Field = Extra info (ie, mark ID).
         markExtraInfo = markInfo[1]
-        print "mark  ID: %d" % (markExtraInfo[0])
+        print "mark  ID: %d" % (markExtraInfo[0]),  markInfo[1]
         print "  alpha %.3f - beta %.3f" % (markShapeInfo[1], markShapeInfo[2])
         print "  width %.3f - height %.3f" % (markShapeInfo[3], markShapeInfo[4])
 

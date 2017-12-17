@@ -1,8 +1,10 @@
 from naoqi import ALProxy
 import Robot_IP_Address
 import time
+landMarkBig = 0.17
+landMarkSmall = 0.115
 
-def detect_landmark(motion):
+def detect_landmark(motion,landMarkSize):
     try:
         landMarkProxy = ALProxy("ALLandMarkDetection", Robot_IP_Address.IP, 9559)
     except Exception, e:
@@ -40,7 +42,7 @@ def detect_landmark(motion):
 
         # Check whether we got a valid output.
         if (val and isinstance(val, list) and len(val) >= 2):
-            #returns bool value True if it sees a landmark
+            # returns bool value True if it sees a landmark
             return True
             # We detected naomarks !
             # For each mark, we can read its shape info and ID.
@@ -84,7 +86,8 @@ def main():
     id = motion.post.moveInit()
     motion.wait(id, 0)
 
-    if detect_landmark(motion):
+    landMarkSize = 0.17
+    if detect_landmark(motion,landMarkSize):
         print "We found a landmark!"
 
     else:

@@ -7,19 +7,23 @@ import script_actionCan
 import joint_holdCan
 import motion_moveTo
 import math
+
 #minimum distance for when robot is close enough to box
-minDist = 0.6
+minDist = 0.70
+#landMarkBig = 0.17
+#using smaller landmark
+landMarkSize = 0.115
 
 #vision_localization.py from nao website put into function
 #robot should be localizing landmark since this only runs after findLandMark which detects if landmark
 #is in front of robot or not
-def landmark_localization():
+def landmark_localization(landMarkSize):
     # -*- encoding: UTF-8 -*-
 
-    # Set here your robto's ip.
+    # Set here your robot's ip.
     ip = Robot_IP_Address.IP
     # Set here the size of the landmark in meters.
-    landmarkTheoreticalSize = 0.17  # in meters
+    landmarkTheoreticalSize = landMarkSize  # in meters
     # Set here the current camera ("CameraTop" or "CameraBottom").
     currentCamera = "CameraTop"
 
@@ -70,9 +74,13 @@ def landmark_localization():
     #x: forward(+) and back(-), y: left(+) and right(-)
     return (robotToLandmark.r1_c4, robotToLandmark.r2_c4, robotToLandmark.r1_c4)
 
-def move_to_landmark(motion):
-    #x,y,z = landmark_localization()
-    x, y, z = landmark_localization()
+def move_to_landmark(motion,landMarkSize):
+    #added this while loop so robot can find landmark when it loses it between detect and localize
+    while (script_findLandMark.detect_landmark(motion, landMarkSize) is False):
+        id = motion.post.moveTo(0, 0, 45 * almath.TO_RAD)
+        motion.wait(id, 0)
+    # x,y,z = landmark_localization()
+    x, y, z = landmark_localization(landMarkSize)
     print x, y, z
 
     print "Hello I run"
@@ -110,46 +118,60 @@ def main():
 
     #variable to hold y coordinate from localization data to determine which direction
     #robot rotates in
-    yDist = 1.0
+    xDist = 0.0
+    yDist = 0.0
 
     #detect landmark loop and move to landmark will be in one big while loop that
     #stops when robot is at "destination" ie close to landmark where it will begin to think about throwing can away
     #while (destination is false):
     while (True):
         #rotates "in place" until it sees the landmark
-        while(script_findLandMark.detect_landmark(motion) is False):
+        while(script_findLandMark.detect_landmark(motion,landMarkSize) is False):
             #robot moves something degrees times almath's conversion to rads
             #robot rotates left if it loses landmark location and it was to it's left
             if (yDist >= 0.0):
-                id = motion.post.moveTo(0,0, 15 * almath.TO_RAD)
+                id = motion.post.moveTo(0,0, 45 * almath.TO_RAD)
                 motion.wait(id,0)
             #robot rotates right  if it loses landmark location and it was to it's right
             else:
-                id = motion.post.moveTo(0,0, -15 * almath.TO_RAD)
+                id = motion.post.moveTo(0,0, -45 * almath.TO_RAD)
                 motion.wait(id,0)
         #tts.say("I found the landmark")
 
         #calls move to landmark function after detecting landmark
-        move_to_landmark(motion)
-        print move_to_landmark(motion)
+        move_to_landmark(motion,landMarkSize)
+        print move_to_landmark(motion,landMarkSize)
         #returns x and y values form move to landmark
-        xDist, yDist = move_to_landmark(motion)
+        xDist, yDist = move_to_landmark(motion,landMarkSize)
         print xDist
         #if robot is close enough to it's location, break out of this loop
         if (xDist <= minDist):
             break
 
-    #code for getting closer to bin  based off desired method can go here
+    script_actionCan.raise_arm(motion)
     #probably going to have a scripts for raising and then throwing can in there
+    # code for getting closer to bin  based off desired method can go here
+    id = motion.post.moveTo(0.15, 0, 0)
+    motion.wait(id, 0)
+
+    #drops can into bin
+    id - motion.post.moveTo(0, 0, 45 * almath.TO_RAD)
+    script_actionCan.drop_can(motion)
 
     #Chappie did it! Replace with better quote if desired
-    
-    tts.say("Chappie did it!")
-    joint_holdCan.joint_raise_arm(motion)
-    
-    time.sleep(2)
-    motion_moveTo.move_forward(motion)
-    time.sleep(3)
+    tts.say("Chappie if you want to be in the gang you have to be cool, like daddy!")
+    tts.say("Look how daddy walks! Look how cool it's! Need to keep it gangsta' Chappie!")
+
+    #backs away from bin
+    id = motion.post.moveTo(-0.30, 0, 0)
+    motion.wait(id, 0)
+
+    tts.say("Don't laugh, I'm being cool!")
+    # insert victory dance/pose here
+
+    #Chappie rests
+    id = motion.post.setWalkArmsEnabled(True, True)
+    motion.wait(id, 0)
     motion.rest()
 
 if __name__ == "__main__":

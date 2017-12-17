@@ -31,3 +31,4 @@ def joint_raise_arm(motionProxy):
     #time.sleep(3)
     #motionProxy.setStiffnesses("RArm", 0.0)
 
+

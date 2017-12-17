@@ -23,13 +23,13 @@ def lift_can(motion):
     angleLists_l_shoulderRoll = -10* almath.TO_RAD
     angleLists_r_shoulderPitch = 90 * almath.TO_RAD
     angleLists_l_shoulderPitch = -45 * almath.TO_RAD
-    #angleLists_headPitch = 25 * almath.TO_RAD
+    angleLists_headPitch = 0 * almath.TO_RAD
     timeLists = 1.0
     isAbsolute = True
 
-    #moves head up
-    #id = motion.post.angleInterpolation(headPitch, angleLists_headPitch, timeLists, isAbsolute)
-    #motion.wait(id, 0)
+    #moves head into position
+    id = motion.post.angleInterpolation(headPitch, angleLists_headPitch, timeLists, isAbsolute)
+    motion.wait(id, 0)
 
 
     #moves shoulders up
@@ -65,7 +65,7 @@ def lift_can(motion):
     #time.sleep(2)
 
 #code to raise can before tossing can go here
-def raise_can(motion):
+def raise_arm(motion):
     #wrist yaw is rotating wrist
     #shoulder roll is angle of shoulder away from robot body
     r_wrist = "RWristYaw"
@@ -80,13 +80,13 @@ def raise_can(motion):
     angleLists_l_wrist = -100.0 * almath.TO_RAD
     angleLists_r_shoulderRoll = 10 * almath.TO_RAD
     angleLists_l_shoulderRoll = -10* almath.TO_RAD
-    angleLists_r_shoulderPitch = 90 * almath.TO_RAD
+    angleLists_r_shoulderPitch = 10*almath.TO_RAD
     angleLists_l_shoulderPitch = -45 * almath.TO_RAD
     timeLists = 1.0
     isAbsolute = True
 
-    #id = motion.post.angleInterpolation(joint name goes here, joint angle goes here, timeLists, isAbsolute)
-    #motion.wait(id, 0)
+    id = motion.post.angleInterpolation(r_shoulderPitch, angleLists_r_shoulderPitch, timeLists, isAbsolute)
+    motion.wait(id, 0)
 
 #code to drop can in bin can go here
 def drop_can(motion):
@@ -94,23 +94,58 @@ def drop_can(motion):
     #shoulder roll is angle of shoulder away from robot body
     r_wrist = "RWristYaw"
     l_wrist = "LWristYaw"
+    r_elbow = "RElbowRoll"
     r_shoulderRoll = "RShoulderRoll"
     l_shoulderRoll = "LShoulderRoll"
     r_shoulderPitch = "RShoulderPitch"
     l_shoulderPitch = "LShoulderPitch"
 
     #editing these values will adjust angles
-    angleLists_r_wrist = 100.0 * almath.TO_RAD
-    angleLists_l_wrist = -100.0 * almath.TO_RAD
-    angleLists_r_shoulderRoll = 10 * almath.TO_RAD
+    angleLists_r_wrist = 0 * almath.TO_RAD
+    angleLists_l_wrist = -100 * almath.TO_RAD
+    angleLists_r_elbowRoll = 45 * almath.TO_RAD
+    angleLists_r_shoulderRoll = -18 * almath.TO_RAD
     angleLists_l_shoulderRoll = -10* almath.TO_RAD
     angleLists_r_shoulderPitch = 90 * almath.TO_RAD
     angleLists_l_shoulderPitch = -45 * almath.TO_RAD
     timeLists = 1.0
     isAbsolute = True
 
-    #id = motion.post.angleInterpolation(joint name goes here, joint angle goes here, timeLists, isAbsolute)
+    #moves arm to left
+    id = motion.post.angleInterpolation(r_shoulderRoll, angleLists_r_shoulderRoll, timeLists, isAbsolute)
+    motion.wait(id, 0)
+
+    #rotates elbow
+    #id = motion.post.angleInterpolation(r_elbow, angleLists_r_elbowRoll, timeLists, isAbsolute)
     #motion.wait(id, 0)
+
+    #rotates wrist
+    id = motion.post.angleInterpolation(r_wrist, angleLists_r_wrist, timeLists, isAbsolute)
+    motion.wait(id, 0)
+
+    id = motion.post.openHand("RHand")
+    motion.wait(id, 0)
+
+def victory_dance(motion):
+    r_wrist = "RWristYaw"
+    l_wrist = "LWristYaw"
+    r_elbow = "RElbowRoll"
+    r_shoulderRoll = "RShoulderRoll"
+    l_shoulderRoll = "LShoulderRoll"
+    r_shoulderPitch = "RShoulderPitch"
+    l_shoulderPitch = "LShoulderPitch"
+
+    # editing these values will adjust angles
+    angleLists_r_wrist = 0 * almath.TO_RAD
+    angleLists_l_wrist = -100 * almath.TO_RAD
+    angleLists_r_elbowRoll = 45 * almath.TO_RAD
+    angleLists_r_shoulderRoll = -18 * almath.TO_RAD
+    angleLists_l_shoulderRoll = -10 * almath.TO_RAD
+    angleLists_r_shoulderPitch = 90 * almath.TO_RAD
+    angleLists_l_shoulderPitch = -45 * almath.TO_RAD
+    timeLists = 1.0
+    isAbsolute = True
+
 
 def main():
     motion = ALProxy("ALMotion", Robot_IP_Address.IP, 9559)
