@@ -3,9 +3,9 @@ NAO Robot Project
 
 Chappie!
 
-"Current" IP is 10.16.96.41
+Group 1: Tim Joyce, Max Medina, Lara Nunes, Michael Sousa
 
-TODO: Decide how to approach bin closer, since the robot can no longer notice the landmark, when it is too close
+TODO: Edge cases: Robot is close to landmark but is at an angle and landmark looks different. Robot doesn't have way to deal with landmark bin if it's not in it's line of sight at the start (Would have to program wandering walk, which would take into account robot not knowing where edge of the world is)
 
 -Robot's neck motor for head pitching causes head to fall down or backward, which is bad for stability
 
