@@ -77,7 +77,7 @@ def landmark_localization(landMarkSize):
 def move_to_landmark(motion,landMarkSize):
     #added this while loop so robot can find landmark when it loses it between detect and localize
     while (script_findLandMark.detect_landmark(motion, landMarkSize) is False):
-        id = motion.post.moveTo(0, 0, 45 * almath.TO_RAD)
+        id = motion.post.moveTo(0, 0, 30 * almath.TO_RAD)
         motion.wait(id, 0)
     # x,y,z = landmark_localization()
     x, y, z = landmark_localization(landMarkSize)
@@ -130,18 +130,18 @@ def main():
             #robot moves something degrees times almath's conversion to rads
             #robot rotates left if it loses landmark location and it was to it's left
             if (yDist >= 0.0):
-                id = motion.post.moveTo(0,0, 45 * almath.TO_RAD)
+                id = motion.post.moveTo(0,0, 30 * almath.TO_RAD)
                 motion.wait(id,0)
             #robot rotates right  if it loses landmark location and it was to it's right
             else:
-                id = motion.post.moveTo(0,0, -45 * almath.TO_RAD)
+                id = motion.post.moveTo(0,0, -30 * almath.TO_RAD)
                 motion.wait(id,0)
         #tts.say("I found the landmark")
 
         #calls move to landmark function after detecting landmark
         move_to_landmark(motion,landMarkSize)
         print move_to_landmark(motion,landMarkSize)
-        #returns x and y values form move to landmark
+        #returns x and y values from move to landmark
         xDist, yDist = move_to_landmark(motion,landMarkSize)
         print xDist
         #if robot is close enough to it's location, break out of this loop
@@ -151,7 +151,7 @@ def main():
     script_actionCan.raise_arm(motion)
     #probably going to have a scripts for raising and then throwing can in there
     # code for getting closer to bin  based off desired method can go here
-    id = motion.post.moveTo(0.15, 0, 0)
+    id = motion.post.moveTo(0.25, 0, 0)
     motion.wait(id, 0)
 
     #drops can into bin
