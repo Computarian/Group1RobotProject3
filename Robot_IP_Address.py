@@ -1,7 +1,6 @@
 
 #Change Robot IP Address here
 IP = "10.16.96.41"
-#IP = "10.16.96.43"
 
 #IP's of the past
 """

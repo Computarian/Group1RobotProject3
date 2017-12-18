@@ -151,7 +151,7 @@ def main():
     script_actionCan.raise_arm(motion)
     #probably going to have a scripts for raising and then throwing can in there
     # code for getting closer to bin  based off desired method can go here
-    id = motion.post.moveTo(0.25, 0, 0)
+    id = motion.post.moveTo(0.22, 0, 0)
     motion.wait(id, 0)
 
     #drops can into bin
