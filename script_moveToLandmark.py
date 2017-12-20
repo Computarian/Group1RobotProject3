@@ -141,7 +141,12 @@ def main():
         #tts.say("I found the landmark")
 
         #calls move to landmark function after detecting landmark
-        move_to_landmark(motion,landMarkSize)
+        """
+        code bug: called move_to_landmark twice and robot would lose landmark since second time it runs,
+        landmark localization may not be able to find landmark since robot moved after running running
+        detect_landmark function
+        """
+        #move_to_landmark(motion,landMarkSize)
         print move_to_landmark(motion,landMarkSize)
         #returns x and y values from move to landmark
         xDist, yDist = move_to_landmark(motion,landMarkSize)
