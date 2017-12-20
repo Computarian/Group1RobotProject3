@@ -1,3 +1,5 @@
+#Group 1: Tim Joyce, Max Medina, Lara Nunes, Michael Sousa
+
 from naoqi import ALProxy
 import Robot_IP_Address
 

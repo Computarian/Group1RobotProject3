@@ -1,3 +1,4 @@
+#Group 1: Tim Joyce, Max Medina, Lara Nunes, Michael Sousa
 
 #Change Robot IP Address here
 IP = "10.16.96.41"
